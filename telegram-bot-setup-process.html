@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Telegram Bot Setup Process</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5eefc;
+      --muted: #b9c6dc;
+      --accent: #60a5fa;
+      --accent-2: #34d399;
+      --border: rgba(255,255,255,0.08);
+      --shadow: 0 20px 50px rgba(0,0,0,0.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #08101f 0%, #0f172a 100%);
+      line-height: 1.65;
+    }
+    .wrap {
+      width: min(1100px, calc(100% - 32px));
+      margin: 28px auto 56px;
+    }
+    .hero, .card {
+      background: rgba(17,24,39,0.92);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+    .hero {
+      padding: 30px;
+      margin-bottom: 22px;
+      background: linear-gradient(135deg, rgba(96,165,250,0.18), rgba(52,211,153,0.10)), rgba(17,24,39,0.95);
+    }
+    .card {
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+    h1, h2, h3 { margin: 0 0 12px; line-height: 1.2; }
+    h1 { font-size: clamp(2rem, 4vw, 3.2rem); }
+    h2 { font-size: 1.4rem; }
+    h3 { font-size: 1.05rem; color: var(--accent-2); }
+    p { margin: 0 0 12px; color: var(--muted); }
+    ul { margin: 10px 0 0; padding-left: 20px; color: var(--muted); }
+    li + li { margin-top: 8px; }
+    .tag {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      color: var(--accent);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .step {
+      border-left: 4px solid var(--accent);
+      padding-left: 14px;
+      margin-top: 14px;
+    }
+    code {
+      background: rgba(255,255,255,0.08);
+      padding: 2px 6px;
+      border-radius: 8px;
+      color: #fff;
+      font-family: Consolas, monospace;
+    }
+    .note {
+      color: #fff;
+      background: rgba(52,211,153,0.08);
+      border: 1px solid rgba(52,211,153,0.18);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 14px;
+    }
+    .muted { color: var(--muted); }
+    @media (max-width: 840px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .hero, .card { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="tag">Telegram Bot Project</div>
+      <h1>Telegram Bot Setup Process</h1>
+      <p>
+        This page summarizes the full baseline setup completed for the Telegram bot project on the laptop.
+        It is based on the recorded setup log and is meant to make the process easier to review visually.
+      </p>
+      <div class="note">
+        Baseline status: <strong>Completed</strong> — the Telegram bot is connected to OpenClaw, routed to the <code>aja</code> agent, and command execution through <code>exec</code> is blocked for safety.
+      </div>
+    </section>
+
+    <section class="grid grid-3">
+      <div class="card">
+        <h2>Goal</h2>
+        <p>Build a Telegram bot that can be contacted directly through Telegram and connected to OpenClaw cleanly and safely.</p>
+      </div>
+      <div class="card">
+        <h2>Primary Agent</h2>
+        <p>The Telegram binding was moved from <code>main</code> to a dedicated agent named <code>Aja</code>.</p>
+      </div>
+      <div class="card">
+        <h2>Safety Rule</h2>
+        <p>The Telegram agent was configured to deny the <code>exec</code> tool, so it cannot run desktop/system commands.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Initial Setup Steps</h2>
+      <div class="step">
+        <h3>Step 1 — Create the Telegram bot</h3>
+        <ul>
+          <li>Created the bot using BotFather.</li>
+          <li>Obtained the Telegram bot API token.</li>
+        </ul>
+      </div>
+      <div class="step">
+        <h3>Step 2 — Back up the OpenClaw configuration</h3>
+        <ul>
+          <li>Backed up <code>openclaw.json</code> before making changes.</li>
+          <li>This ensures the original configuration can be restored if needed.</li>
+          <li>Windows path used during setup: <code>C:\Users\jatin\.openclaw\openclaw.json</code></li>
+        </ul>
+      </div>
+      <div class="step">
+        <h3>Step 3 — Check OpenClaw health before configuration</h3>
+        <ul>
+          <li>Ran <code>openclaw doctor</code></li>
+          <li>Ran <code>openclaw status</code></li>
+          <li>Confirmed there was no critical blocker before proceeding.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Phase 1 — Basic Telegram to OpenClaw Connection</h2>
+      <p>The first success condition was simple: send <code>hello</code> to the Telegram bot and receive a reply.</p>
+
+      <div class="step">
+        <h3>Phase 1 — Step 4</h3>
+        <ul>
+          <li>Added Telegram as a channel in OpenClaw using <code>openclaw channels add</code>.</li>
+          <li>Selected the correct account path during setup.</li>
+          <li>Entered the bot token from BotFather.</li>
+          <li>Set DM access policy to <code>pairing</code> for safer initial testing.</li>
+          <li>Bound the Telegram account to the <code>main</code> agent temporarily for baseline testing.</li>
+        </ul>
+      </div>
+
+      <div class="step">
+        <h3>Phase 1 — Step 5</h3>
+        <ul>
+          <li>Checked pending pairing using <code>openclaw pairing list</code>.</li>
+          <li>Approved the pairing using <code>openclaw pairing approve telegram &lt;code&gt;</code>.</li>
+          <li>Confirmed the bot could send and receive replies after approval.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Phase 2 — Create a New Agent and Move the Telegram Binding</h2>
+      <div class="step">
+        <h3>Phase 2 — Step 1</h3>
+        <ul>
+          <li>Created a new OpenClaw agent named <code>Aja</code>.</li>
+          <li>Command used: <code>openclaw agents add Aja</code></li>
+        </ul>
+      </div>
+      <div class="step">
+        <h3>Phase 2 — Step 2</h3>
+        <ul>
+          <li>Created a separate workspace for the new agent.</li>
+          <li>Reused the auth profile from the <code>main</code> agent.</li>
+          <li>Skipped reconfiguring model/auth and skipped chat channel setup during the agent creation flow.</li>
+        </ul>
+      </div>
+      <div class="step">
+        <h3>Phase 2 — Step 3</h3>
+        <ul>
+          <li>Checked bindings with <code>openclaw agents list --bindings</code>.</li>
+          <li>Unbound Telegram from <code>main</code>.</li>
+          <li>Bound Telegram to <code>aja</code>.</li>
+          <li>This moved the bot from the default assistant to the dedicated Telegram agent.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Phase 3 — Rules and Restrictions for the Agent</h2>
+      <div class="step">
+        <h3>Phase 3 — Step 1</h3>
+        <ul>
+          <li>Set the agent identity using <code>openclaw agents set-identity --agent aja --name "Aja" --emoji "🧠"</code>.</li>
+          <li>Visible identity configured as:</li>
+          <li>Name: <code>Aja</code></li>
+          <li>Emoji: <code>🧠</code></li>
+        </ul>
+      </div>
+      <div class="step">
+        <h3>Phase 3 — Step 2</h3>
+        <ul>
+          <li>Added an agent-level tool restriction so the Telegram bot cannot use <code>exec</code>.</li>
+          <li>File locations for <code>openclaw.json</code>:</li>
+          <li>Windows: <code>C:\Users\&lt;username&gt;\.openclaw\openclaw.json</code></li>
+          <li>Linux: <code>/home/&lt;username&gt;/.openclaw/openclaw.json</code></li>
+          <li>macOS: <code>/Users/&lt;username&gt;/.openclaw/openclaw.json</code></li>
+          <li>Inside the target agent object in <code>agents.list</code>, add:</li>
+          <li><code>"tools": { "deny": ["exec"] }</code></li>
+        </ul>
+        <p class="muted">This is an agent-level restriction, not a top-level tools setting.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Final Baseline Result</h2>
+      <ul>
+        <li>Telegram bot created and connected</li>
+        <li>Pairing flow tested successfully</li>
+        <li>Dedicated agent <code>Aja</code> created</li>
+        <li>Telegram binding moved to <code>Aja</code></li>
+        <li>Agent identity set</li>
+        <li><code>exec</code> denied for safety</li>
+        <li>First baseline of the project completed</li>
+      </ul>
+      <p class="note">This HTML page is a visual summary of the completed setup process. The detailed source-of-truth log remains <code>telegram-bot-setup-log.md</code>.</p>
+    </section>
+  </div>
+</body>
+</html>
